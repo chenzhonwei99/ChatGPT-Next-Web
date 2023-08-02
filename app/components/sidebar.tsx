@@ -109,6 +109,26 @@ export function SideBar(props: { className?: string }) {
   const config = useAppConfig();
 
   useHotKey();
+  
+    useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    document.head.appendChild(script);
+  
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  const adRef = useRef(null);
+
+useEffect(() => {
+  if (adRef.current) {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  }
+}, [adRef]);
 
   return (
     <div
@@ -123,6 +143,15 @@ export function SideBar(props: { className?: string }) {
         <div className={styles["sidebar-sub-title"]}>
           Build your own AI assistant.
         </div>
+		<ins
+          ref={adRef}
+          className="adsbygoogle"
+          style={{ display: "block", marginBottom: "20px" }} // 添加 marginBottom 以增加与下方视图的距离
+          data-ad-client="ca-pub-1027588722085336"
+          data-ad-slot="5771884005"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
         <div className={styles["sidebar-logo"] + " no-dark"}>
           <ChatGptIcon />
         </div>
