@@ -149,7 +149,7 @@ useEffect(() => {
           style={{ display: "block", marginBottom: "20px" }} // 添加 marginBottom 以增加与下方视图的距离
           data-ad-client="ca-pub-1027588722085336"
           data-ad-slot="5771884005"
-          data-ad-format="auto"
+          data-ad-format="horizontal"
           data-full-width-responsive="true"
         />
         <div className={styles["sidebar-logo"] + " no-dark"}>
