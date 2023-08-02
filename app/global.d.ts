@@ -10,6 +10,8 @@ declare module "*.scss" {
 
 declare module "*.svg";
 
-interface Window {
-  adsbygoogle: { [key: string]: unknown }[];
+declare interface Window {
+  __TAURI__?: {
+    writeText(text: string): Promise<void>;
+  };
 }
