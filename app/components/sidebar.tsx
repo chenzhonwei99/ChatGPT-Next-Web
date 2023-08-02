@@ -110,7 +110,7 @@ export function SideBar(props: { className?: string }) {
 
   useHotKey();
   
-    useEffect(() => {
+  useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
     script.async = true;
@@ -130,6 +130,25 @@ useEffect(() => {
   }
 }, [adRef]);
 
+useEffect(() => {
+  if (!adRef.current) {
+    return;
+  }
+
+  const observer = new MutationObserver(() => {
+    if (adRef.current && (adRef.current as HTMLElement).querySelector("iframe")) {
+      (adRef.current as HTMLElement).style.width = "250px";
+      (adRef.current as HTMLElement).style.height = "208px";
+    }
+  });
+
+  observer.observe(adRef.current, { childList: true, subtree: true });
+
+  return () => {
+    observer.disconnect();
+  };
+}, []);
+
   return (
     <div
       className={`${styles.sidebar} ${props.className} ${
@@ -143,19 +162,30 @@ useEffect(() => {
         <div className={styles["sidebar-sub-title"]}>
           Build your own AI assistant.
         </div>
-		<ins
-          ref={adRef}
-          className="adsbygoogle"
-          style={{ display: "block", marginBottom: "20px" }} // 添加 marginBottom 以增加与下方视图的距离
-          data-ad-client="ca-pub-1027588722085336"
-          data-ad-slot="5771884005"
-          data-ad-format="horizontal"
-          data-full-width-responsive="true"
-        />
         <div className={styles["sidebar-logo"] + " no-dark"}>
           <ChatGptIcon />
         </div>
       </div>
+
+	          <div
+  style={{
+    minWidth: "250px",
+    minHeight: "208px",
+    overflow: "hidden", // 隐藏超出容器的内容
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px"
+  }}
+>
+  <ins
+    ref={adRef}
+    className="adsbygoogle"
+    style={{ display: "block", minWidth: "250px", minHeight: "208px" }}
+    data-ad-client="ca-pub-1027588722085336"
+    data-ad-slot="5771884005"
+    data-full-width-responsive="true"
+  />
+</div>
 
       <div className={styles["sidebar-header-bar"]}>
         <IconButton
