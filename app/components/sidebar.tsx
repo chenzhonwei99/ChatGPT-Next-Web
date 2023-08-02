@@ -10,8 +10,6 @@ import AddIcon from "../icons/add.svg";
 import CloseIcon from "../icons/close.svg";
 import MaskIcon from "../icons/mask.svg";
 import PluginIcon from "../icons/plugin.svg";
-import DragIcon from "../icons/drag.svg";
-
 import Locale from "../locales";
 
 import { useAppConfig, useChatStore } from "../store";
@@ -27,7 +25,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
-import { showConfirm, showToast } from "./ui-lib";
+import { showToast } from "./ui-lib";
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -38,11 +36,14 @@ function useHotKey() {
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.altKey || e.ctrlKey) {
+      if (e.metaKey || e.altKey || e.ctrlKey) {
+        const n = chatStore.sessions.length;
+        const limit = (x: number) => (x + n) % n;
+        const i = chatStore.currentSessionIndex;
         if (e.key === "ArrowUp") {
-          chatStore.nextSession(-1);
+          chatStore.selectSession(limit(i - 1));
         } else if (e.key === "ArrowDown") {
-          chatStore.nextSession(1);
+          chatStore.selectSession(limit(i + 1));
         }
       }
     };
@@ -67,7 +68,7 @@ function useDragSideBar() {
     lastUpdateTime.current = Date.now();
     const d = e.clientX - startX.current;
     const nextWidth = limit(startDragWidth.current + d);
-    config.update((config) => (config.sidebarWidth = nextWidth));
+    config.update((config: { sidebarWidth: number; }) => (config.sidebarWidth = nextWidth));
   });
 
   const handleMouseUp = useRef(() => {
@@ -110,19 +111,46 @@ export function SideBar(props: { className?: string }) {
 
   useHotKey();
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    document.head.appendChild(script);
+  
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  const adRef = useRef(null);
+
+useEffect(() => {
+  if (adRef.current) {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  }
+}, [adRef]);
+
   return (
     <div
       className={`${styles.sidebar} ${props.className} ${
         shouldNarrow && styles["narrow-sidebar"]
       }`}
     >
-      <div className={styles["sidebar-header"]} data-tauri-drag-region>
-        <div className={styles["sidebar-title"]} data-tauri-drag-region>
-          ChatGPT Next
-        </div>
+      <div className={styles["sidebar-header"]}>
+        <div className={styles["sidebar-title"]}>ChatGPT Next</div>
         <div className={styles["sidebar-sub-title"]}>
           Build your own AI assistant.
         </div>
+        <ins
+          ref={adRef}
+          className="adsbygoogle"
+          style={{ display: "block", marginBottom: "20px" }} // 添加 marginBottom 以增加与下方视图的距离
+          data-ad-client="ca-pub-1027588722085336"
+          data-ad-slot="5771884005"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
         <div className={styles["sidebar-logo"] + " no-dark"}>
           <ChatGptIcon />
         </div>
@@ -161,8 +189,8 @@ export function SideBar(props: { className?: string }) {
           <div className={styles["sidebar-action"] + " " + styles.mobile}>
             <IconButton
               icon={<CloseIcon />}
-              onClick={async () => {
-                if (await showConfirm(Locale.Home.DeleteChat)) {
+              onClick={() => {
+                if (confirm(Locale.Home.DeleteChat)) {
                   chatStore.deleteSession(chatStore.currentSessionIndex);
                 }
               }}
@@ -199,9 +227,7 @@ export function SideBar(props: { className?: string }) {
       <div
         className={styles["sidebar-drag"]}
         onMouseDown={(e) => onDragMouseDown(e as any)}
-      >
-        <DragIcon />
-      </div>
+      ></div>
     </div>
   );
 }
