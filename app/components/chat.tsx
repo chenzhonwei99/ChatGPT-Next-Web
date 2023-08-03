@@ -1238,8 +1238,6 @@ export function YourComponent() {
         data-full-width-responsive="true"
       />
     </div>
-  );
-}
       
       
       <div className={styles["chat-input-panel"]}>
