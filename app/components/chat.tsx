@@ -1178,7 +1178,7 @@ export function Chat() {
       </div>
 
 
-export function Chat2() {
+export function AdsComponent() {
   const adRef = useRef(null);
 
  useEffect(() => {
