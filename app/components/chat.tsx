@@ -186,7 +186,7 @@ function useSubmitHandler() {
   const isComposing = useRef(false);
 
 
-
+const adRef = useRef(null);
     useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
