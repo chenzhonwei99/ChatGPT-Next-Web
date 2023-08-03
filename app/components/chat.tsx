@@ -1178,47 +1178,47 @@ export function Chat() {
       </div>
 
 
+import React, { useEffect, useRef } from 'react';
+
 export function AdsComponent() {
   const adRef = useRef(null);
 
- useEffect(() => {
+  useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
     script.async = true;
     script.crossOrigin = "anonymous";
     document.head.appendChild(script);
-  
+
     return () => {
       document.head.removeChild(script);
     };
   }, []);
 
-  const adRef = useRef(null);
-
-useEffect(() => {
-  if (adRef.current) {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
-  }
-}, [adRef]);
-
-useEffect(() => {
-  if (!adRef.current) {
-    return;
-  }
-
-  const observer = new MutationObserver(() => {
-    if (adRef.current && (adRef.current as HTMLElement).querySelector("iframe")) {
-      (adRef.current as HTMLElement).style.width = "250px";
-      (adRef.current as HTMLElement).style.height = "208px";
+  useEffect(() => {
+    if (adRef.current) {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
     }
-  });
+  }, []);
 
-  observer.observe(adRef.current, { childList: true, subtree: true });
+  useEffect(() => {
+    if (!adRef.current) {
+      return;
+    }
 
-  return () => {
-    observer.disconnect();
-  };
-}, []);
+    const observer = new MutationObserver(() => {
+      if (adRef.current && (adRef.current as HTMLElement).querySelector("iframe")) {
+        (adRef.current as HTMLElement).style.width = "250px";
+        (adRef.current as HTMLElement).style.height = "208px";
+      }
+    });
+
+    observer.observe(adRef.current, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <div
