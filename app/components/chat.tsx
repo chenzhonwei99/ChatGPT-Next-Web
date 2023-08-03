@@ -437,8 +437,9 @@ export function ChatActions(props: {
   const [showModelSelector, setShowModelSelector] = useState(false);
 
   return (
-    123
+
     <div className={styles["chat-input-actions"]}>
+      <div>123</div>
       {couldStop && (
         <ChatAction
           onClick={stopAll}
