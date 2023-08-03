@@ -1178,7 +1178,7 @@ export function Chat() {
       </div>
 
 
-      export function SideBar(props: { className?: string }) {
+  export function SideBar(props: { className?: string }) {
   const chatStore = useChatStore();
 
   // drag side bar
