@@ -186,7 +186,6 @@ function useSubmitHandler() {
   const isComposing = useRef(false);
 
 
-const adRef = useRef(null);
     useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
@@ -1220,25 +1219,7 @@ export function Chat() {
       </div>
 
 
-<div
-  style={{
-    minWidth: "250px",
-    minHeight: "208px",
-    overflow: "hidden", // 隐藏超出容器的内容
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: "20px"
-  }}
->
-  <ins
-    ref={adRef}
-    className="adsbygoogle"
-    style={{ display: "block", minWidth: "250px", minHeight: "208px" }}
-    data-ad-client="ca-pub-1027588722085336"
-    data-ad-slot="5771884005"
-    data-full-width-responsive="true"
-  />
-</div>
+
       
       
       <div className={styles["chat-input-panel"]}>
