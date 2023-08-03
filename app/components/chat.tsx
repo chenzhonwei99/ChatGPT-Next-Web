@@ -1177,10 +1177,13 @@ export function Chat() {
           );
         })}
       </div>
-      
-import React, { useEffect, useRef } from 'react';
 
-function GoogleAd() {
+
+import React, { useState, useEffect, useRef, useMemo } from "react";
+
+export const YourComponent = () => {
+  // ...其他的useState和useEffect
+
   const adRef = useRef(null);
 
   useEffect(() => {
@@ -1189,7 +1192,7 @@ function GoogleAd() {
     script.async = true;
     script.crossOrigin = "anonymous";
     document.head.appendChild(script);
-  
+
     return () => {
       document.head.removeChild(script);
     };
@@ -1201,19 +1204,41 @@ function GoogleAd() {
     }
   }, [adRef]);
 
+  useEffect(() => {
+    if (!adRef.current) {
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      if (adRef.current && adRef.current.querySelector("iframe")) {
+        adRef.current.style.width = "250px";
+        adRef.current.style.height = "208px";
+      }
+    });
+
+    observer.observe(adRef.current, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <div ref={adRef}>
+    <div className={styles.chat} key={session.id}>
+      // ...其他代码
+
       <div
         style={{
           minWidth: "250px",
           minHeight: "208px",
-          overflow: "hidden",
+          overflow: "hidden", // 隐藏超出容器的内容
           display: "flex",
           justifyContent: "center",
           marginBottom: "20px"
         }}
       >
         <ins
+          ref={adRef}
           className="adsbygoogle"
           style={{ display: "block", minWidth: "250px", minHeight: "208px" }}
           data-ad-client="ca-pub-1027588722085336"
@@ -1221,11 +1246,7 @@ function GoogleAd() {
           data-full-width-responsive="true"
         />
       </div>
-    </div>
-  );
-}
-
-export default GoogleAd;
+      
       
       <div className={styles["chat-input-panel"]}>
         <PromptHints prompts={promptHints} onPromptSelect={onPromptSelect} />
