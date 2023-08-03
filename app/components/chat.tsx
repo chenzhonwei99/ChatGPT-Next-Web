@@ -185,45 +185,6 @@ function useSubmitHandler() {
   const submitKey = config.submitKey;
   const isComposing = useRef(false);
 
-   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
-    script.async = true;
-    script.crossOrigin = "anonymous";
-    document.head.appendChild(script);
-  
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
-
-  const adRef = useRef(null);
-
-useEffect(() => {
-  if (adRef.current) {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
-  }
-}, [adRef]);
-
-useEffect(() => {
-  if (!adRef.current) {
-    return;
-  }
-
-  const observer = new MutationObserver(() => {
-    if (adRef.current && (adRef.current as HTMLElement).querySelector("iframe")) {
-      (adRef.current as HTMLElement).style.width = "250px";
-      (adRef.current as HTMLElement).style.height = "208px";
-    }
-  });
-
-  observer.observe(adRef.current, { childList: true, subtree: true });
-
-  return () => {
-    observer.disconnect();
-  };
-}, []);
-
   
 
   useEffect(() => {
@@ -1217,26 +1178,55 @@ export function Chat() {
         })}
       </div>
       
+import React, { useEffect, useRef } from 'react';
+
+function GoogleAd() {
+  const adRef = useRef(null);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    document.head.appendChild(script);
+  
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (adRef.current) {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  }, [adRef]);
+
+  return (
+    <div ref={adRef}>
       <div
-  style={{
-    minWidth: "250px",
-    minHeight: "208px",
-    overflow: "hidden", // 隐藏超出容器的内容
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: "20px"
-  }}
->
-  <ins
-    ref={adRef}
-    className="adsbygoogle"
-    style={{ display: "block", minWidth: "250px", minHeight: "208px" }}
-    data-ad-client="ca-pub-1027588722085336"
-    data-ad-slot="5771884005"
-    data-full-width-responsive="true"
-  />
-        
-</div>
+        style={{
+          minWidth: "250px",
+          minHeight: "208px",
+          overflow: "hidden",
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "20px"
+        }}
+      >
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block", minWidth: "250px", minHeight: "208px" }}
+          data-ad-client="ca-pub-1027588722085336"
+          data-ad-slot="5771884005"
+          data-full-width-responsive="true"
+        />
+      </div>
+    </div>
+  );
+}
+
+export default GoogleAd;
+      
       <div className={styles["chat-input-panel"]}>
         <PromptHints prompts={promptHints} onPromptSelect={onPromptSelect} />
 
