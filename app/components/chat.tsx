@@ -1178,10 +1178,10 @@ export function Chat() {
       </div>
 
 
-export function YourComponent() {
+export function SideBar(props: { className?: string }) {
   const adRef = useRef(null);
 
-  useEffect(() => {
+ useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
     script.async = true;
@@ -1193,30 +1193,32 @@ export function YourComponent() {
     };
   }, []);
 
-  useEffect(() => {
-    if (adRef.current) {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+  const adRef = useRef(null);
+
+useEffect(() => {
+  if (adRef.current) {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  }
+}, [adRef]);
+
+useEffect(() => {
+  if (!adRef.current) {
+    return;
+  }
+
+  const observer = new MutationObserver(() => {
+    if (adRef.current && (adRef.current as HTMLElement).querySelector("iframe")) {
+      (adRef.current as HTMLElement).style.width = "250px";
+      (adRef.current as HTMLElement).style.height = "208px";
     }
-  }, [adRef]);
+  });
 
-  useEffect(() => {
-    if (!adRef.current) {
-      return;
-    }
+  observer.observe(adRef.current, { childList: true, subtree: true });
 
-    const observer = new MutationObserver(() => {
-      if (adRef.current && (adRef.current as HTMLElement).querySelector("iframe")) {
-        (adRef.current as HTMLElement).style.width = "250px";
-        (adRef.current as HTMLElement).style.height = "208px";
-      }
-    });
-
-    observer.observe(adRef.current, { childList: true, subtree: true });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  return () => {
+    observer.disconnect();
+  };
+}, []);
 
   return (
     <div
