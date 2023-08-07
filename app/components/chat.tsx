@@ -638,7 +638,7 @@ function _Chat() {
     script.async = true;
     script.crossOrigin = "anonymous";
     document.head.appendChild(script);
-  
+
     return () => {
       document.head.removeChild(script);
     };
@@ -1239,15 +1239,15 @@ function _Chat() {
         })}
       </div>
 
-     
-          
+
+
 
 
       <div className="chat-ads-panel">
         <div
           style={{
             minWidth: "250px",
-            minHeight:  isMobileScreen ? "120px" : "80px",
+            minHeight: isMobileScreen ? "120px" : "80px",
             overflow: "hidden",
             display: "flex",
             justifyContent: "center",
@@ -1256,9 +1256,11 @@ function _Chat() {
         >
           <ins
             ref={adRef}
-            className="adsbygoogle"
+            className="adsbygoogle chat-ads-panel-inner"
+            style="display:block;width:728px;height:90px;margin:auto;"
             data-ad-client="ca-pub-1027588722085336"
             data-ad-slot="5771884005"
+            data-ad-format="horizo​​ntal"
             data-full-width-responsive="true"
           />
         </div>
