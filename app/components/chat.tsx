@@ -1248,7 +1248,7 @@ function _Chat() {
           style={{
             minWidth: "250px",
             minHeight:  isMobileScreen ? "120px" : "80px",
-            ovflow: "hidden",
+            overflow: "hidden",
             display: "flex",
             justifyContent: "center",
             backgroundColor: "rgb(249, 249, 249)",
