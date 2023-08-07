@@ -632,17 +632,17 @@ function _Chat() {
 
   // google ads
   // sidebar 加载了googole 脚本，理论上不用再加载了
-  // useEffect(() => {
-  //   const script = document.createElement("script");
-  //   script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
-  //   script.async = true;
-  //   script.crossOrigin = "anonymous";
-  //   document.head.appendChild(script);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    document.head.appendChild(script);
   
-  //   return () => {
-  //     document.head.removeChild(script);
-  //   };
-  // }, []);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
 
   const adRef = useRef(null);
 
@@ -1247,7 +1247,8 @@ function _Chat() {
         <div
           style={{
             minWidth: "250px",
-            height:  isMobileScreen ? "120px" : "80px",
+            minHeight:  isMobileScreen ? "120px" : "80px",
+            ovflow: "hidden",
             display: "flex",
             justifyContent: "center",
             backgroundColor: "rgb(249, 249, 249)",
