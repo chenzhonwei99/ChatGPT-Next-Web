@@ -1257,7 +1257,7 @@ function _Chat() {
           <ins
             ref={adRef}
             className="adsbygoogle chat-ads-panel-inner"
-            style="display:block;width:728px;height:90px;margin:auto;"
+            style={{ display: "block",width: "728px",height: "80px",margin: "auto"}}
             data-ad-client="ca-pub-1027588722085336"
             data-ad-slot="5771884005"
             data-ad-format="horizo​​ntal"
