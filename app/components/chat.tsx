@@ -191,7 +191,6 @@ function useSubmitHandler() {
   const submitKey = config.submitKey;
   const isComposing = useRef(false);
 
-
   useEffect(() => {
     const onCompositionStart = () => {
       isComposing.current = true;
@@ -441,7 +440,6 @@ export function ChatActions(props: {
   const [showModelSelector, setShowModelSelector] = useState(false);
 
   return (
-
     <div className={styles["chat-input-actions"]}>
       {couldStop && (
         <ChatAction
@@ -630,6 +628,29 @@ function _Chat() {
     100,
     { leading: true, trailing: true },
   );
+
+
+  // google ads
+  // sidebar 加载了googole 脚本，理论上不用再加载了
+  // useEffect(() => {
+  //   const script = document.createElement("script");
+  //   script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1027588722085336";
+  //   script.async = true;
+  //   script.crossOrigin = "anonymous";
+  //   document.head.appendChild(script);
+  
+  //   return () => {
+  //     document.head.removeChild(script);
+  //   };
+  // }, []);
+
+  const adRef = useRef(null);
+
+  useEffect(() => {
+    if (adRef.current) {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  }, [adRef]);
 
   // auto grow input
   const [inputRows, setInputRows] = useState(2);
@@ -883,27 +904,27 @@ function _Chat() {
       .concat(
         isLoading
           ? [
-              {
-                ...createMessage({
-                  role: "assistant",
-                  content: "……",
-                }),
-                preview: true,
-              },
-            ]
+            {
+              ...createMessage({
+                role: "assistant",
+                content: "……",
+              }),
+              preview: true,
+            },
+          ]
           : [],
       )
       .concat(
         userInput.length > 0 && config.sendPreviewBubble
           ? [
-              {
-                ...createMessage({
-                  role: "user",
-                  content: userInput,
-                }),
-                preview: true,
-              },
-            ]
+            {
+              ...createMessage({
+                role: "user",
+                content: userInput,
+              }),
+              preview: true,
+            },
+          ]
           : [],
       );
   }, [
@@ -995,7 +1016,7 @@ function _Chat() {
         if (payload.key || payload.url) {
           showConfirm(
             Locale.URLCommand.Settings +
-              `\n${JSON.stringify(payload, null, 4)}`,
+            `\n${JSON.stringify(payload, null, 4)}`,
           ).then((res) => {
             if (!res) return;
             if (payload.key) {
@@ -1218,9 +1239,30 @@ function _Chat() {
         })}
       </div>
 
+     
+          
 
-      
-      
+
+      <div className="chat-ads-panel">
+        <div
+          style={{
+            minWidth: "250px",
+            height:  isMobileScreen ? "120px" : "80px",
+            display: "flex",
+            justifyContent: "center",
+            backgroundColor: "rgb(249, 249, 249)",
+          }}
+        >
+          <ins
+            ref={adRef}
+            className="adsbygoogle"
+            data-ad-client="ca-pub-1027588722085336"
+            data-ad-slot="5771884005"
+            data-full-width-responsive="true"
+          />
+        </div>
+      </div>
+
       <div className={styles["chat-input-panel"]}>
         <PromptHints prompts={promptHints} onPromptSelect={onPromptSelect} />
 
